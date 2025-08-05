@@ -25,6 +25,7 @@ User.init(
         role: DataTypes.STRING,
         email: DataTypes.STRING,
         password: DataTypes.STRING,
+        avatar: {type:DataTypes.STRING, allowNull:true},
     },
     {
         sequelize,

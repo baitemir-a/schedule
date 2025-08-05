@@ -9,8 +9,10 @@ interface CreateUserDto {
 class UserController {
     async createUser(req:Request<{}, {}, CreateUserDto>, res:Response): Promise<void>{
         const { name, role, email, password } = req.body;
+        const avatar = req.file ? `/uploads/${req.file.filename}` : null;
+        console.log(avatar)
         try {
-            const newUser = await User.create({ name, role, email, password });
+            const newUser = await User.create({ name, role, email, password, avatar });
             res.status(201).json(newUser);
         } catch (error) {
             res.status(500).json({ message: 'Error creating user', error });

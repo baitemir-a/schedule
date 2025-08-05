@@ -5,6 +5,8 @@ import sequelize from './db';
 import userRouter from './routes/user-router';
 import authRouter from "./routes/auth-router";
 import cookies from 'cookie-parser'
+import path from 'path';
+
 const app: Application = express();
 const port = 5000;
 
@@ -18,6 +20,10 @@ app.use(cors({
     credentials: true,
     origin: "*"
 }));
+
+
+
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 app.use(cookies())
 app.use(bodyParser.urlencoded({ extended: false }));
