@@ -6,9 +6,17 @@ import userRouter from './routes/user-router';
 import authRouter from "./routes/auth-router";
 import cookies from 'cookie-parser'
 import path from 'path';
+import User from './model/user-model';
 
 const app: Application = express();
 const port = 5000;
+
+User.findOrCreate({where:{name:'superuser'}, defaults:{
+    name: process.env.SUPERUSER_NAME,
+    email: process.env.SUPERUSER_EMAIL,
+    password: process.env.SUPERUSER_PASSWORD,
+    role:'admin'
+}})
 
 sequelize.sync().then(() => {
     console.log('Database synced');
