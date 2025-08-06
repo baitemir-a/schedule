@@ -7,11 +7,14 @@ import authRouter from "./routes/auth-router";
 import cookies from 'cookie-parser'
 import path from 'path';
 import User from './model/user-model';
+import dotenv from 'dotenv';
 
 const app: Application = express();
 const port = 5000;
 
-User.findOrCreate({where:{name:'superuser'}, defaults:{
+dotenv.config();
+
+User.findOrCreate({where:{email:'super@user.com'}, defaults:{
     name: process.env.SUPERUSER_NAME,
     email: process.env.SUPERUSER_EMAIL,
     password: process.env.SUPERUSER_PASSWORD,
