@@ -4,6 +4,7 @@ import bodyParser from 'body-parser';
 import sequelize from './db';
 import userRouter from './routes/user-router';
 import authRouter from "./routes/auth-router";
+import journalRouter from './routes/journal-router';
 import cookies from 'cookie-parser'
 import path from 'path';
 import User from './model/user-model';
@@ -42,6 +43,7 @@ app.use(bodyParser.json());
 
 app.use("/users", userRouter);
 app.use("/auth", authRouter);
+app.use("/journal", journalRouter);
 
 app.listen(port, () => {
     console.log(`Server listening on port ${port}`);

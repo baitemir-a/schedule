@@ -1,6 +1,8 @@
 import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
+import dotenv from 'dotenv';
 
+dotenv.config();
 export const checkRole = (roles: string[]) => {
     return (req: Request, res: Response, next: NextFunction) => {
         const authHeader = req.headers.authorization;
