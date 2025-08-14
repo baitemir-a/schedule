@@ -1,7 +1,9 @@
 import {Request, Response} from 'express';
 import jwt from 'jsonwebtoken';
 import User from '../model/user-model';
+import dotenv from 'dotenv';
 
+dotenv.config();
 const ACCESS_SECRET = process.env.ACCESS_SECRET || 'your_secret_key';
 const REFRESH_SECRET = process.env.REFRESH_SECRET || 'your_secret_key';
 
@@ -15,10 +17,9 @@ class AuthController {
                 res.status(401).json({message: 'Invalid credentials'});
                 return;
             }
-            const {uuid, role} = user;
+            const {uuid, role} = user;            
             const accessToken = jwt.sign({uuid, role}, ACCESS_SECRET, {expiresIn: '15m'});
             const refreshToken = jwt.sign({uuid, role}, REFRESH_SECRET, {expiresIn: '7d'});
-
             res
                 .cookie('refreshToken', refreshToken, {
                     httpOnly: true,
