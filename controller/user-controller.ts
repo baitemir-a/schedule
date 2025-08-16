@@ -22,7 +22,7 @@ class UserController {
         try {
             const user = await User.findByPk(uuid);
             if (user) {
-                res.status(201).json(user);
+                res.status(200).json(user);
             }
             else{
                 res.status(404).json({message: 'User not found'})
@@ -34,7 +34,7 @@ class UserController {
     async getUserList(req:Request, res:Response): Promise<void>{
         try {
             const users = await User.findAll();
-            res.status(201).json(users);
+            res.status(200).json(users);
         } catch (error) {
             res.status(500).json({ message: 'Error finding users', error });
         }
@@ -46,7 +46,7 @@ class UserController {
             if(result === 0){
                 res.status(400).json({message: `Bad request`})
             }
-            res.status(201).json(result);
+            res.status(200).json(result);
         } catch (error) {
             res.status(500).json({ message: 'Error finding users', error });
         }
@@ -60,7 +60,7 @@ class UserController {
                 res.status(400).json({message: `Bad request`})
             }
             const updatedUser = await User.findByPk(uuid)
-            res.status(201).json(updatedUser);
+            res.status(200).json(updatedUser);
         } catch (error) {
             res.status(500).json({ message: 'Error creating user', error });
         }
