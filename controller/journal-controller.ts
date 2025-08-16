@@ -9,6 +9,45 @@ import User from '../model/user-model';
 
 class JournalController {
 
+
+    async getJournalList(req: Request, res: Response): Promise<void> {
+        try {
+            const journals = await Journal.findAll({ include: [{ model: User, as: "user" }] });
+            res.status(200).json(journals);
+        } catch (error) {
+            res.status(500).json({ message: 'Error finding journals', error });
+        }
+    }
+    async getJournalById(req: Request<{ uuid: string }, {}, {}>, res: Response): Promise<void> {
+        const { uuid } = req.params;
+        try {
+            const journal = await Journal.findByPk(uuid, { include: [{ model: User, as: "user" }] });
+            if (journal) {
+                res.status(200).json(journal);
+            }
+            else {
+                res.status(404).json({ message: 'Journal not found' })
+            }
+        } catch (error) {
+            res.status(500).json({ message: 'Error finding journal', error });
+        }
+    }
+    async getJournalByUserId(req: Request<{ uuid: string }, {}, {}>, res: Response): Promise<void> {
+        const { uuid } = req.params;
+        try {
+            const journal = await Journal.findOne({where:{user_id:uuid}, include: [{ model: User, as: "user" }] });
+            if (journal) {
+                res.status(200).json(journal);
+            }
+            else {
+                res.status(404).json({ message: 'Journal not found' })
+            }
+        } catch (error) {
+            res.status(500).json({ message: 'Error finding journal', error });
+        }
+    }
+
+
     async first(req: AuthenticatedRequest<{ date: string }, {}, {}>, res: Response): Promise<void> {
         const { date } = req.params;
 
