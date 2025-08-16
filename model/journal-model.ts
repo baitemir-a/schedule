@@ -9,6 +9,7 @@ class Journal extends Model {
     departure_time!:string
     total_time!:string
     status!:Status
+    note!:string
 }
 enum Status {
     'ONTIME',

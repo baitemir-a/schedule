@@ -12,4 +12,6 @@ journalRouter.get('/', checkRole(['admin']), journalController.getJournalList);
 journalRouter.get('/:uuid', checkRole(['admin']), journalController.getJournalById);
 journalRouter.get('/user/:uuid', checkRole(['admin']), journalController.getJournalByUserId);
 
+journalRouter.patch('/note/:uuid', checkRole(['admin']), journalController.note);
+
 export default journalRouter;
