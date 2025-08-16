@@ -11,5 +11,6 @@ export class DateHelper {
             inputDate.getDate() === today.getDate()
         );
     }
+    public static readonly ARRIVAL_TIME = "09:00:00";
 
 }

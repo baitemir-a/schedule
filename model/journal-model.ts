@@ -4,7 +4,11 @@ import User from "./user-model";
 
 class Journal extends Model { 
     uuid!: string
-
+    user!: User
+    arrival_time!:string
+    departure_time!:string
+    total_time!:string
+    status!:Status
 }
 enum Status {
     'ONTIME',
@@ -44,5 +48,7 @@ Journal.init(
         modelName: "journal",
     }
 );
+Journal.belongsTo(User, { foreignKey: "user_id", as: "user" });
+User.hasMany(Journal, { foreignKey: "user_id", as: "journals" });
 
 export default Journal;
