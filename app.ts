@@ -15,12 +15,14 @@ const port = 5000;
 
 dotenv.config();
 
-User.findOrCreate({where:{email:'super@user.com'}, defaults:{
-    name: process.env.SUPERUSER_NAME,
-    email: process.env.SUPERUSER_EMAIL,
-    password: process.env.SUPERUSER_PASSWORD,
-    role:'admin'
-}})
+User.findOrCreate({
+    where: { email: 'super@user.com' }, defaults: {
+        name: process.env.SUPERUSER_NAME,
+        email: process.env.SUPERUSER_EMAIL,
+        password: process.env.SUPERUSER_PASSWORD,
+        role: 'admin'
+    }
+})
 
 sequelize.sync().then(() => {
     console.log('Database synced');
@@ -41,6 +43,7 @@ app.use(cookies())
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
+app.use("/ping", (req, res) => res.status(200).json({ message: 'ok' }));
 app.use("/users", userRouter);
 app.use("/auth", authRouter);
 app.use("/journal", journalRouter);

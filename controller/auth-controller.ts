@@ -13,8 +13,12 @@ class AuthController {
         const {email, password} = req.body;
         try {
             const user = await User.findOne({where: {email}});
-            if (!user || !(await user.comparePassword(password))) {
-                res.status(401).json({message: 'Invalid credentials'});
+            if (!user) {
+                res.status(400).json({message: 'Неверный email'});
+                return;
+            }
+            if (!(await user.comparePassword(password))) {
+                res.status(400).json({message: 'Неверный пароль'});
                 return;
             }
             const {uuid, role} = user;            
@@ -51,6 +55,9 @@ class AuthController {
             sameSite: 'strict',
         });
         res.json({ message: 'Logged out' });
+    }
+    async isAuth(_:Request, res: Response): Promise<void> {
+        res.json({ message: 'You are logged in ;)' });
     }
 }
 
