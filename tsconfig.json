@@ -6,10 +6,12 @@
     "outDir": "dist",
     "esModuleInterop": true,
     "strict": true,
-    "typeRoots": ["./node_modules/@types", "./types"]
+    "typeRoots": ["./node_modules/@types",
+      "./src/types"
+    ]
   },
   "include": [
-    "**/*.ts"
+    "src"
   ],
   "exclude": [
     "dist",

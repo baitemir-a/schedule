@@ -1,7 +1,7 @@
 import express, { Application } from 'express';
 import cors from 'cors';
 import bodyParser from 'body-parser';
-import sequelize from './db';
+import sequelize from '../db';
 import userRouter from './routes/user-router';
 import authRouter from "./routes/auth-router";
 import journalRouter from './routes/journal-router';
