@@ -1,9 +1,9 @@
 {
   "name": "schedule",
   "version": "1.0.0",
-  "main": "dist/app.js",
+  "main": "dist/index.js",
   "scripts": {
-    "dev": "nodemon app.ts",
+    "dev": "nodemon index.ts",
     "build": "tsc"
   },
   "dependencies": {
