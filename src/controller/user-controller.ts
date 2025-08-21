@@ -1,8 +1,5 @@
 import User from "../model/user-model";
 import { Request, Response } from "express";
-import fs from "fs";
-import path from "path";
-
 interface CreateUserDto {
   name: string;
   role: string;
@@ -15,11 +12,7 @@ class UserController {
     res: Response
   ): Promise<void> {
     const { name, role, email, password } = req.body;
-    const uploadDir = path.join(__dirname, "..", "uploads");
     try {
-      if (!fs.existsSync(uploadDir)) {
-        fs.mkdirSync(uploadDir, { recursive: true });
-      }
       const avatar = req.file ? `/uploads/${req.file.filename}` : null;
       const newUser = await User.create({
         name,

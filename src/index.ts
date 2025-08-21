@@ -10,7 +10,7 @@ import path from 'path';
 import User from './model/user-model';
 import dotenv from 'dotenv';
 
-const index: Application = express();
+const app: Application = express();
 const port = 5000;
 
 dotenv.config();
@@ -30,24 +30,22 @@ sequelize.sync().then(() => {
     console.error('Error syncing database:', err);
 });
 
-index.use(cors({
+app.use(cors({
     credentials: true,
     origin: "*"
 }));
 
 
+app.use("/uploads", express.static(path.join(process.cwd(), "uploads")));
+app.use(cookies())
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
-index.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+app.use("/ping", (req, res) => res.status(200).json({ message: 'ok' }));
+app.use("/users", userRouter);
+app.use("/auth", authRouter);
+app.use("/journal", journalRouter);
 
-index.use(cookies())
-index.use(bodyParser.urlencoded({ extended: false }));
-index.use(bodyParser.json());
-
-index.use("/ping", (req, res) => res.status(200).json({ message: 'ok' }));
-index.use("/users", userRouter);
-index.use("/auth", authRouter);
-index.use("/journal", journalRouter);
-
-index.listen(port, () => {
+app.listen(port, () => {
     console.log(`Server listening on port ${port}`);
 });
