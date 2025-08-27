@@ -9,11 +9,36 @@ import cookies from 'cookie-parser'
 import path from 'path';
 import User from './model/user-model';
 import dotenv from 'dotenv';
+import swaggerJsdoc from 'swagger-jsdoc';
+import swaggerUi from 'swagger-ui-express';
+import eventRouter from './routes/event-router';
 
 const app: Application = express();
 const port = 5000;
 
 dotenv.config();
+
+// === Swagger setup ===
+const swaggerOptions = {
+    definition: {
+        openapi: "3.0.0",
+        info: {
+            title: "My API",
+            version: "1.0.0",
+            description: "Express API with Swagger",
+        },
+        servers: [
+            {
+                url: `http://localhost:${port}`,
+            },
+        ],
+    },
+    apis: ["./routes/*.ts"], // <-- look into your routers
+};
+
+const swaggerSpec = swaggerJsdoc(swaggerOptions);
+app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+// === end Swagger setup ===
 
 User.findOrCreate({
     where: { email: 'super@user.com' }, defaults: {
@@ -32,18 +57,16 @@ sequelize.sync().then(() => {
 
 app.use(cors({
     credentials: true,
-    origin: "*"
+    origin: ["http://localhost:5173", process.env.FRONTEND_URL || ""]
 }));
 
-
-
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
-
 app.use(cookies())
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-app.use("/ping", (req, res) => res.status(200).json({ message: 'ok' }));
+app.use("/events", eventRouter);
+app.use("/ping", (_, res) => res.status(200).json({ message: 'ok' }));
 app.use("/users", userRouter);
 app.use("/auth", authRouter);
 app.use("/journal", journalRouter);

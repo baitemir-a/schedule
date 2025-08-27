@@ -24,6 +24,8 @@ export const authenticate: RequestHandler = (req: Request, res: Response, next: 
         (req as AuthenticatedRequest).user = jwt.verify(token, ACCESS_SECRET) as TokenPayload;
         next();
     } catch (error) {
+        console.log(error);
+        
         return res.status(401).json({ message: 'Unauthorized: invalid or expired token' });
     }
 };

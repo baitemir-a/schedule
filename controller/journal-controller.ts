@@ -3,6 +3,8 @@ import Journal from '../model/journal-model';
 import { AuthenticatedRequest } from '../types/auth-types';
 import { DateHelper } from '../helpers/date-helper';
 import User from '../model/user-model';
+import { pushEvent } from '../routes/event-router';
+import { Op } from 'sequelize';
 
 
 interface NoteDto {
@@ -54,7 +56,7 @@ class JournalController {
         try {
             const journal = await Journal.findByPk(uuid, { include: [{ model: User, as: "user" }] });
             if (journal) {
-                const updatedJournal = await journal.update({note:note})
+                const updatedJournal = await journal.update({ note: note })
                 res.status(200).json(updatedJournal);
             }
             else {
@@ -69,23 +71,47 @@ class JournalController {
         const { date } = req.params;
 
         if (!DateHelper.isToday(date)) {
-            console.log(date);
-
             res.status(400).json({ message: 'Error, QR code is expired or invalid' });
-            return
+            return;
         }
 
         try {
+            const startOfDay = new Date();
+            startOfDay.setHours(0, 0, 0, 0);
+
+            const endOfDay = new Date();
+            endOfDay.setHours(23, 59, 59, 999);
+            const existing = await Journal.findOne({
+                where: {
+                    user_id: req.user?.uuid,
+                    date: {
+                        [Op.between]: [startOfDay, endOfDay]
+                    }
+                }
+            });
+
+
+            if (existing) {
+                res.status(400).json({ message: "Can not scan twice" });
+                return;
+            }
+
             const newJournal = await Journal.create({
                 user_id: req.user?.uuid,
                 date: new Date()
             });
 
-            res.status(201).json({ uuid: newJournal.uuid });
+            pushEvent({
+                type: "NEW_JOURNAL",
+                payload: { uuid: newJournal.uuid, user: req.user }
+            });
+
+            res.status(201).json({ message: 'Journal successfully created' });
         } catch (error) {
             res.status(500).json({ message: 'Error creating QR', error });
         }
     }
+
     async second(
         req: AuthenticatedRequest<{ uuid: string }, {}, {}>,
         res: Response
