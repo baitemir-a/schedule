@@ -57,18 +57,13 @@ sequelize.sync().then(() => {
 
 app.use(cors({
     credentials: true,
-<<<<<<< HEAD:app.ts
     origin: ["http://localhost:5173", process.env.FRONTEND_URL || ""]
 }));
 
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
-=======
-    origin: ["http://localhost:5173", process.env.FRONTEND_URL||""]
-}));
 
 
 app.use("/uploads", express.static(path.join(process.cwd(), "uploads")));
->>>>>>> aef81e3016893d8c22624bf0a46d1e8fdb3f4b8d:src/index.ts
 app.use(cookies())
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
