@@ -61,8 +61,6 @@ app.use(cors({
     origin: ["http://localhost:5173", process.env.FRONTEND_URL || ""]
 }));
 
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
-
 
 app.use("/uploads", express.static(path.join(process.cwd(), "uploads")));
 app.use(cookies())

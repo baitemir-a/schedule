@@ -124,6 +124,7 @@ class JournalController {
             });
 
             if (!journal) {
+                console.log(uuid);
                 res.status(404).json({ message: "Journal not found" });
                 return;
             }
