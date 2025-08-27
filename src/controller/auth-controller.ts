@@ -59,6 +59,9 @@ class AuthController {
     async isAuth(_:Request, res: Response): Promise<void> {
         res.json({ message: 'You are logged in ;)' });
     }
+    async isAdmin(_:Request, res: Response): Promise<void> {
+        res.json({ message: 'You are admin ;)' });
+    }
 }
 
 export default new AuthController();

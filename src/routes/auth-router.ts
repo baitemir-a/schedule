@@ -1,6 +1,7 @@
 import { Router } from "express";
 import authController from '../controller/auth-controller';
 import { authenticate } from "../middleware/auth-middleware";
+import { checkRole } from "../middleware/role-middleware";
 
 const authRouter = Router();
 
@@ -76,5 +77,17 @@ authRouter.post('/logout', authController.logout);
  *         description: Authenticated
  */
 authRouter.get('/isauth', authenticate, authController.isAuth);
+
+/**
+ * @swagger
+ * /auth/isadmin:
+ *   get:
+ *     summary: Check if user is admin
+ *     tags: [Auth]
+ *     responses:
+ *       200:
+ *         description: Authenticated
+ */
+authRouter.get('/isadmin', checkRole(['admin']), authController.isAdmin);
 
 export default authRouter;
