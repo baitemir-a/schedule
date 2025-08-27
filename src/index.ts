@@ -33,7 +33,8 @@ const swaggerOptions = {
             },
         ],
     },
-    apis: ["./routes/*.ts"], // <-- look into your routers
+    apis: [path.join(__dirname, "./routes/*.ts")]
+
 };
 
 const swaggerSpec = swaggerJsdoc(swaggerOptions);
