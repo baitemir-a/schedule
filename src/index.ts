@@ -23,7 +23,7 @@ const swaggerOptions = {
     definition: {
         openapi: "3.0.0",
         info: {
-            title: "My API",
+            title: "QR Journal",
             version: "1.0.0",
             description: "Express API with Swagger",
         },

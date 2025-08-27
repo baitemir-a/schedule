@@ -31,7 +31,7 @@ class AuthController {
                     sameSite: 'strict',
                     maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
                 })
-                .json({accessToken});
+                .json({accessToken, role});
         } catch (err) {
             res.status(500).json({message: 'Login error', error: err});
         }

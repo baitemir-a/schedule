@@ -34,7 +34,7 @@ const authRouter = Router();
  *               - password
  *     responses:
  *       200:
- *         description: Login successful, returns access token
+ *         description: Login successful, returns access token and role
  *       400:
  *         description: Invalid email or password
  */
