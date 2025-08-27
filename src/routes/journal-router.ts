@@ -67,7 +67,19 @@ journalRouter.post('/second/:uuid', authenticate, journalController.second);
  *       200:
  *         description: List of journals
  */
-journalRouter.get('/', checkRole(['admin']), journalController.getJournalList);
+journalRouter.get('/', checkRole(['admin']), journalController.getList);
+
+/**
+ * @swagger
+ * /journal:
+ *   get:
+ *     summary: Get all journal entries (admin only)
+ *     tags: [Journal]
+ *     responses:
+ *       200:
+ *         description: List of journals
+ */
+journalRouter.delete('/clear', checkRole(['admin']), journalController.clear);
 
 /**
  * @swagger
@@ -87,7 +99,7 @@ journalRouter.get('/', checkRole(['admin']), journalController.getJournalList);
  *       404:
  *         description: Journal not found
  */
-journalRouter.get('/:uuid', checkRole(['admin']), journalController.getJournalById);
+journalRouter.get('/:uuid', checkRole(['admin']), journalController.getById);
 
 /**
  * @swagger
@@ -107,7 +119,7 @@ journalRouter.get('/:uuid', checkRole(['admin']), journalController.getJournalBy
  *       404:
  *         description: Journal not found
  */
-journalRouter.get('/user/:uuid', checkRole(['admin']), journalController.getJournalByUserId);
+journalRouter.get('/user/:uuid', checkRole(['admin']), journalController.getByUserId);
 
 /**
  * @swagger
