@@ -173,7 +173,7 @@ class JournalController {
 
       if (!journal.arrival_time) {
         const status =
-          currentTime > DateHelper.ARRIVAL_TIME ? "LATE" : "ONTIME";
+          currentTime > DateHelper.getArrivalTime() ? "LATE" : "ONTIME";
         await journal.update({
           arrival_time: currentTime,
           status,
