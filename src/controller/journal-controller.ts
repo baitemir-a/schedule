@@ -23,7 +23,7 @@ class JournalController {
     }
     async clear(_: Request, res: Response): Promise<void> {
         try {
-            await Journal.drop();
+            Journal.destroy({ where: {} })
             res.status(200).json({message:'Journals cleared successfully'});
         } catch (error) {
             res.status(500).json({ message: 'Error clearing journals', error });
@@ -99,7 +99,7 @@ class JournalController {
             });
 
 
-            if (existing) {
+            if (existing && !existing.arrival_time) {
                 res.status(400).json({ message: "Can not scan twice" });
                 return;
             }
@@ -116,8 +116,6 @@ class JournalController {
 
             res.status(201).json({ message: 'Journal successfully created' });
         } catch (error) {
-            console.log(error);
-            
             res.status(500).json({ message: 'Error creating QR', error });
         }
     }
@@ -192,7 +190,6 @@ class JournalController {
                 });
             }
         } catch (error) {
-            console.error(error);
             res.status(500).json({ message: "Error marking journal", error });
         }
     }
