@@ -116,6 +116,8 @@ class JournalController {
 
             res.status(201).json({ message: 'Journal successfully created' });
         } catch (error) {
+            console.log(error);
+            
             res.status(500).json({ message: 'Error creating QR', error });
         }
     }
