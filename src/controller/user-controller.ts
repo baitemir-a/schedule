@@ -44,7 +44,8 @@ class UserController {
   }
   async getUserList(req: Request, res: Response): Promise<void> {
     try {
-      const users = await User.findAll();
+      const {role} = req.query      
+      const users = await User.findAll({where:{role}});
       res.status(200).json(users);
     } catch (error) {
       res.status(500).json({ message: "Error finding users", error });
