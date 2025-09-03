@@ -1,16 +1,20 @@
-import { Request } from 'express';
+import type { Request } from 'express';
+import type { ParamsDictionary } from 'express-serve-static-core';
+import type { ParsedQs } from 'qs';
+
+export interface UserPayload {
+  uuid: string;
+  role: string;
+  email: string;
+  iat?: number;
+  exp?: number;
+}
 
 export interface AuthenticatedRequest<
-  P = {},
-  ResBody = any,
-  ReqBody = any, 
-  ReqQuery = any
+  P extends ParamsDictionary = ParamsDictionary,
+  ResBody = unknown,
+  ReqBody = unknown,
+  ReqQuery extends ParsedQs = ParsedQs
 > extends Request<P, ResBody, ReqBody, ReqQuery> {
-  user?: {
-    uuid: string;
-    role: string;
-    email: string;
-    iat?: number;
-    exp?: number;
-  };
+  user?: UserPayload;
 }
