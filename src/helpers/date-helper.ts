@@ -2,13 +2,18 @@ export class DateHelper {
   static isToday(dateStr: string): boolean {
     const [day, month, year] = dateStr.split(".").map(Number);
 
+    // Create input date in Kyrgyzstan timezone (UTC+6)
     const inputDate = new Date(year, month - 1, day);
-    const today = new Date();
-
+    
+    // Get current date in Kyrgyzstan timezone (UTC+6)
+    const now = new Date();
+    const kyrgyzstanTime = new Date(now.getTime() + (6 * 60 * 60 * 1000)); // Add 6 hours
+    
+    // Compare dates in the same timezone
     return (
-      inputDate.getFullYear() === today.getFullYear() &&
-      inputDate.getMonth() === today.getMonth() &&
-      inputDate.getDate() === today.getDate()
+      inputDate.getFullYear() === kyrgyzstanTime.getUTCFullYear() &&
+      inputDate.getMonth() === kyrgyzstanTime.getUTCMonth() &&
+      inputDate.getDate() === kyrgyzstanTime.getUTCDate()
     );
   }
 

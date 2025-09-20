@@ -117,11 +117,19 @@ class JournalController {
     }
 
     try {
-      const startOfDay = new Date();
-      startOfDay.setHours(0, 0, 0, 0);
-
-      const endOfDay = new Date();
-      endOfDay.setHours(23, 59, 59, 999);
+      // Create date range in Kyrgyzstan timezone (UTC+6)
+      const now = new Date();
+      const kyrgyzstanOffset = 6 * 60 * 60 * 1000; // 6 hours in milliseconds
+      
+      // Start of day in Kyrgyzstan timezone
+      const kyrgyzstanTime = new Date(now.getTime() + kyrgyzstanOffset);
+      const startOfDay = new Date(kyrgyzstanTime);
+      startOfDay.setUTCHours(0, 0, 0, 0);
+      
+      // End of day in Kyrgyzstan timezone  
+      const endOfDay = new Date(kyrgyzstanTime);
+      endOfDay.setUTCHours(23, 59, 59, 999);
+      
       const existing = await Journal.findOne({
         where: {
           user_id: req.user?.uuid,
