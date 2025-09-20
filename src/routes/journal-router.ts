@@ -83,23 +83,12 @@ journalRouter.delete('/clear', checkRole(['admin']), journalController.clear);
 
 /**
  * @swagger
- * /journal/{uuid}:
+ * /journal/my:
  *   get:
- *     summary: Get a journal entry by UUID (admin only)
+ *     summary: Get current user journal
  *     tags: [Journal]
- *     parameters:
- *       - in: path
- *         name: uuid
- *         schema:
- *           type: string
- *         required: true
- *     responses:
- *       200:
- *         description: Journal entry found
- *       404:
- *         description: Journal not found
  */
-journalRouter.get('/:uuid', checkRole(['admin']), journalController.getById);
+journalRouter.get('/my', authenticate, journalController.getMyJournals);
 
 /**
  * @swagger
@@ -152,5 +141,25 @@ journalRouter.get('/user/:uuid', checkRole(['admin']), journalController.getByUs
  *         description: Journal not found
  */
 journalRouter.patch('/note/:uuid', checkRole(['admin']), journalController.note);
+
+/**
+ * @swagger
+ * /journal/{uuid}:
+ *   get:
+ *     summary: Get a journal entry by UUID (admin only)
+ *     tags: [Journal]
+ *     parameters:
+ *       - in: path
+ *         name: uuid
+ *         schema:
+ *           type: string
+ *         required: true
+ *     responses:
+ *       200:
+ *         description: Journal entry found
+ *       404:
+ *         description: Journal not found
+ */
+journalRouter.get('/:uuid', checkRole(['admin']), journalController.getById);
 
 export default journalRouter;

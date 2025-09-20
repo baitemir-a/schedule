@@ -53,17 +53,34 @@ class JournalController {
   ): Promise<void> {
     const { uuid } = req.params;
     try {
-      const journal = await Journal.findOne({
+      const journals = await Journal.findAll({
         where: { user_id: uuid },
         include: [{ model: User, as: "user" }],
       });
-      if (journal) {
-        res.status(200).json(journal);
+      if (journals) {
+        res.status(200).json(journals);
       } else {
-        res.status(404).json({ message: "Journal not found" });
+        res.status(404).json({ message: "Journals not found" });
       }
     } catch (error) {
-      res.status(500).json({ message: "Error finding journal", error });
+      res.status(500).json({ message: "Error finding journals", error });
+    }
+  }
+
+  async getMyJournals(req: AuthenticatedRequest, res: Response): Promise<void> {
+    try {
+      const journals = await Journal.findAll({
+        where: { user_id: req.user?.uuid },
+      });
+      if (journals) {
+        res.status(200).json(journals);
+      } else {
+        res
+          .status(404)
+          .json({ message: "Journals not found", uuid: req.user?.uuid });
+      }
+    } catch (error) {
+      res.status(500).json({ message: "Error finding journals", error });
     }
   }
 

@@ -45,6 +45,24 @@ userRouter.post('/', upload.single('avatar'), userController.createUser)
 
 /**
  * @swagger
+ * /users/profile:
+ *   get:
+ *     summary: Get current user profile
+ *     tags: [Users]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: User profile found
+ *       401:
+ *         description: Unauthorized
+ *       404:
+ *         description: User not found
+ */
+userRouter.get('/profile', authenticate, userController.getProfile)
+
+/**
+ * @swagger
  * /users/{uuid}:
  *   get:
  *     summary: Get user by ID
@@ -88,10 +106,10 @@ userRouter.delete('/:uuid', checkRole(['admin']), userController.deleteUser)
 /**
  * @swagger
  * /users/{uuid}:
- *   patch:
+ *   put:
  *     summary: Update a user by UUID
  *     tags: [Users]
  */
-userRouter.patch('/:uuid', checkRole(['admin']), userController.updateUser)
+userRouter.put('/:uuid', upload.single('avatar'), authenticate, userController.updateUser)
 
 export default userRouter;
